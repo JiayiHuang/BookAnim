@@ -2,7 +2,6 @@ package com.example.hello
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -30,22 +29,21 @@ class SecondActivity : ComponentActivity() {
     private val mRoot: FrameLayout by lazy { findViewById(R.id.act_2nd_root) }
     private val mTvUpdate: TextView by lazy { findViewById(R.id.act_tv_update) }
     private val mIvSnapshot: ImageView by lazy { findViewById(R.id.act_2nd_iv_snapshot) }
-    private lateinit var cacheView: TextView
+    private lateinit var pageView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_2nd)
-        window.decorView.setBackgroundColor(Color.CYAN)
 
-        cacheView = BookAnimUtil.inst.getPageView(this)
-        cacheView.visibility = View.VISIBLE
+        pageView = BookAnimUtil.inst.getPageView(this)
+        pageView.visibility = View.VISIBLE
         mRoot.addView(
-            cacheView, mRoot.indexOfChild(mTvUpdate), FrameLayout.LayoutParams(
+            pageView, mRoot.indexOfChild(mTvUpdate), FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
         )
 
         mTvUpdate.setOnClickListener {
-            cacheView.text = """
+            pageView.text = """
                     阅读详情页
                     
                     正文内容：
@@ -59,7 +57,7 @@ class SecondActivity : ComponentActivity() {
         }
         onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                val bitmap = BookAnimUtil.createBitmap(cacheView)
+                val bitmap = BookAnimUtil.createBitmap(pageView)
                 mIvSnapshot.setImageBitmap(bitmap)
                 BookAnimUtil.inst.updateSnapshotBefore(bitmap)
                 finish()

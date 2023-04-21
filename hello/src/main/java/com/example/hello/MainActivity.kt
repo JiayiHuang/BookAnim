@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -23,7 +22,7 @@ class MainActivity : ComponentActivity() {
     private val mTvCover: TextView by lazy { findViewById(R.id.main_tv_cover) }
     private val mRoot: FrameLayout by lazy { findViewById(R.id.main_root_fl) }
     private val mTvGo3rd: TextView by lazy { findViewById(R.id.main_tv_3rd) }
-    private lateinit var mTvBg: TextView
+    private lateinit var mTvPage: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,18 +43,17 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun animOpen() {
-        mTvBg = BookAnimUtil.inst.createPageView(this).apply {
-            setBackgroundColor(Color.CYAN)
+        mTvPage = BookAnimUtil.inst.createPageView(this).apply {
             visibility = View.INVISIBLE
         }
         val params = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        mRoot.addView(mTvBg, mRoot.indexOfChild(mTvCover), params)
+        mRoot.addView(mTvPage, mRoot.indexOfChild(mTvCover), params)
         val startViewInfo = Quadruple(
             mTvCover.left * 1f, mTvCover.top * 1f, mTvCover.width * 1f, mTvCover.height * 1f
         )
-        BookAnimUtil.inst.setAnimStartViews(mRoot, mTvCover, mTvBg, mIvSnapshot, startViewInfo)
+        BookAnimUtil.inst.setAnimStartViews(mRoot, mTvCover, mTvPage, mIvSnapshot, startViewInfo)
 
-        mTvBg.post {
+        mTvPage.post {
             AnimatorSet().apply {
                 duration = durationAnim
                 playTogether(BookAnimUtil.inst.coverAnim(true).apply {
@@ -65,14 +63,14 @@ class MainActivity : ComponentActivity() {
                     override fun onAnimationStart(animation: Animator) {
                         super.onAnimationStart(animation)
                         mIvSnapshot.visibility = View.GONE
-                        mTvBg.visibility = View.VISIBLE
+                        mTvPage.visibility = View.VISIBLE
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
                         mIvSnapshot.visibility = View.VISIBLE
-                        mIvSnapshot.setImageBitmap(BookAnimUtil.createBitmap(mTvBg))
+                        mIvSnapshot.setImageBitmap(BookAnimUtil.createBitmap(mTvPage))
                         mTvCover.visibility = View.INVISIBLE
-                        mTvBg.visibility = View.INVISIBLE
+                        mTvPage.visibility = View.INVISIBLE
                         showCloseAnim = true
                         start2ndActivity(this@MainActivity)
                         overridePendingTransition(0, 0)
@@ -83,10 +81,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun animClose() {
-        mTvBg = BookAnimUtil.inst.getPageView(this)
+        mTvPage = BookAnimUtil.inst.getPageView(this)
         val params = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        mRoot.addView(mTvBg, mRoot.indexOfChild(mTvCover), params)
-        mTvBg.post {
+        mRoot.addView(mTvPage, mRoot.indexOfChild(mTvCover), params)
+        mTvPage.post {
             AnimatorSet().apply {
                 playTogether(BookAnimUtil.inst.coverAnim(false).apply {
                     addAll(BookAnimUtil.inst.bgAnim(false))
@@ -97,7 +95,7 @@ class MainActivity : ComponentActivity() {
                         super.onAnimationStart(animation)
                         mIvSnapshot.visibility = View.GONE
                         mTvCover.visibility = View.VISIBLE
-                        mTvBg.visibility = View.VISIBLE
+                        mTvPage.visibility = View.VISIBLE
                     }
                 })
             }.start()

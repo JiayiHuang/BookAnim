@@ -77,6 +77,7 @@ class BookAnimUtil private constructor() {
     fun createPageView(context: Activity): TextView {
         val ctx = MutableContextWrapper(context)
         pageView = TextView(ctx).apply {
+            setBackgroundResource(R.drawable.shape_border)
             gravity = Gravity.CENTER
             text = "addOnAttachStateChangeListener - " + "addOnAttachStateChangeListener"
         }
@@ -142,11 +143,13 @@ class BookAnimUtil private constructor() {
         val bgScaleY = ObjectAnimator.ofFloat(
             pageView, "scaleY", if (isOpen) 1f / bgScaleY else 1f, if (isOpen) 1f else 1f / bgScaleY
         ).apply {
-            val text = pageView.text.toString()
-            addUpdateListener {
-                val fraction = it.animatedFraction.toString()
-                pageView.text =
-                    "$text \n\n Fraction: ${if (fraction.length > 10) fraction.substring(10) else fraction}"
+            if (isOpen) { // 模拟图书正文的动态加载过程
+                val text = pageView.text.toString()
+                addUpdateListener {
+                    val fraction = it.animatedFraction.toString()
+                    pageView.text =
+                        "$text \n\n Fraction: ${if (fraction.length > 10) fraction.substring(10) else fraction}"
+                }
             }
         }
 
