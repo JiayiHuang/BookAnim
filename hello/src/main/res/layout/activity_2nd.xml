@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/act_2nd_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/act_2nd_tv"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:text="Activity2nd"
+        android:textSize="20sp"
+        android:transitionName="transitionName" />
+
+    <TextView
+        android:id="@+id/act_tv_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="更新内容"
+        android:textSize="20sp"
+        android:transitionName="transitionName" />
+
+    <ImageView
+        android:id="@+id/act_2nd_iv_snapshot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_root_fl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/main_tv"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@color/teal_700"
+        android:gravity="center"
+        android:text="MainActivity"
+        android:textSize="20sp"
+        android:transitionName="transitionName" />
+
+    <TextView
+        android:id="@+id/main_tv_3rd"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:background="@color/teal_700"
+        android:gravity="center"
+        android:text="跳转 3rd"
+        android:textSize="20sp"
+        android:transitionName="transitionName" />
+
+    <TextView
+        android:id="@+id/main_tv_cover"
+        android:layout_width="120dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="400dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:text="封面"
+        android:textSize="25sp" />
+    <ImageView
+        android:id="@+id/main_iv_snapshot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>
