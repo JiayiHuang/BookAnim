@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.MutableContextWrapper
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -15,21 +14,20 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 
-
 /**
  * <pre>
  *     @author Jiun
- *     date   :2023/04/20/18:29
- *     desc   : 书籍打开、关闭动画工具类
+ *     date   :2023/04/24/20:01
+ *     desc   : description
  *     version:
  * </pre>
  */
-class BookAnimUtil private constructor() {
+class Anim2ndUtil {
     companion object {
         private const val TAG = "ViewPool"
 
-        val inst: BookAnimUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            BookAnimUtil()
+        val inst: Anim2ndUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            Anim2ndUtil()
         }
 
     }
@@ -43,11 +41,8 @@ class BookAnimUtil private constructor() {
     /** 书籍内容 */
     private var pageView: TextView? = null
 
-    /** 书籍打开页面，保存快照 */
-    private lateinit var ivSnapshot: ImageView
-
     /** 书籍打开时，当前 View 的信息，用来计算动画 */
-    private lateinit var startViewInfo: Quadruple<Float, Float, Float, Float>
+    lateinit var startViewInfo: Quadruple<Float, Float, Float, Float>
 
     fun clear() {
         // TODO: 资源释放
@@ -57,13 +52,13 @@ class BookAnimUtil private constructor() {
         animRoot: FrameLayout,
         coverView: View,
         bgView: TextView,
-        snapshot: ImageView,
-        startViewInfo: Quadruple<Float, Float, Float, Float>
     ) {
         this.animRoot = animRoot
         this.coverView = coverView
         this.pageView = bgView
-        this.ivSnapshot = snapshot
+    }
+
+    fun setAnchorInfo(startViewInfo: Quadruple<Float, Float, Float, Float>) {
         this.startViewInfo = startViewInfo
     }
 
@@ -86,13 +81,6 @@ class BookAnimUtil private constructor() {
             }
         }
         return pageView!!
-    }
-
-    fun updateSnapshotBefore(bitmap: Bitmap) {
-        ivSnapshot.apply {
-            Log.i(TAG, "updateSnapshotBefore: ")
-            setImageBitmap(bitmap)
-        }
     }
 
     private var coverScaleY = 0f
@@ -127,7 +115,7 @@ class BookAnimUtil private constructor() {
     private var bgScaleY = 0f
 
     fun bgAnim(isOpen: Boolean): MutableList<Animator> {
-        val pageView:TextView = this.pageView!!
+        val pageView: TextView = this.pageView!!
         pageView.pivotX = pageView.width / 2f
         pageView.pivotY = pageView.height / 2f
 
@@ -175,20 +163,5 @@ class BookAnimUtil private constructor() {
         view.draw(canvas)
         canvas.save()
         return bp
-    }
-    var coverBitmap: Bitmap? = null;
-
-    fun genCoverBitmap():Bitmap {
-        val width = coverView.measuredWidth
-        val height = coverView.measuredHeight
-        val bp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-        val canvas = Canvas(bp)
-        coverView.background?.apply {
-            draw(canvas)
-        }
-        coverView.draw(canvas)
-        canvas.save()
-        coverBitmap = bp
-        return coverBitmap!!
     }
 }

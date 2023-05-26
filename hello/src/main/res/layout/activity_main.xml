@@ -26,13 +26,21 @@
         android:textSize="20sp"
         android:transitionName="transitionName" />
 
-    <TextView
+    <ImageView
+        android:id="@+id/main_iv_copy"
+        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
         android:id="@+id/main_tv_cover"
         android:layout_width="120dp"
         android:layout_height="160dp"
-        android:background="@android:color/darker_gray"
         android:layout_marginLeft="200dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:scaleType="centerCrop"
         android:layout_marginTop="400dp"
+        android:background="@android:color/holo_red_light"
         android:gravity="center"
         android:padding="10dp"
         android:singleLine="true"
@@ -42,4 +50,13 @@
         android:id="@+id/main_iv_snapshot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/main_tv_test_list"
+        android:layout_width="100dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:background="@color/teal_200"
+        android:textSize="25sp"
+        android:text="测试 List"
+        android:layout_height="100dp"/>
 </FrameLayout>

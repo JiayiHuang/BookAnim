@@ -57,10 +57,11 @@ class SecondActivity : ComponentActivity() {
         }
         onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                val bitmap = BookAnimUtil.createBitmap(pageView)
+                val bitmap = BookAnimUtil.inst.createBitmap(pageView)
                 mIvSnapshot.setImageBitmap(bitmap)
                 BookAnimUtil.inst.updateSnapshotBefore(bitmap)
                 finish()
+                overridePendingTransition(0, 0)
             }
         })
     }

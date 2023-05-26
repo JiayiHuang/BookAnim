@@ -19,11 +19,12 @@ class MainActivity : ComponentActivity() {
     private val durationAnim = 1500L
     private val mTv: TextView by lazy { findViewById(R.id.main_tv) }
     private val mIvSnapshot: ImageView by lazy { findViewById(R.id.main_iv_snapshot) }
-    private val mTvCover: TextView by lazy { findViewById(R.id.main_tv_cover) }
+    private val mIvCopy: ImageView by lazy { findViewById(R.id.main_iv_copy) }
+    private val mCoverView: View by lazy { findViewById(R.id.main_tv_cover) }
     private val mRoot: FrameLayout by lazy { findViewById(R.id.main_root_fl) }
     private val mTvGo3rd: TextView by lazy { findViewById(R.id.main_tv_3rd) }
     private lateinit var mTvPage: TextView
-
+    private val mTvTextList: TextView by lazy { findViewById(R.id.main_tv_test_list) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,21 +38,37 @@ class MainActivity : ComponentActivity() {
             start3rdActivity(this)
         }
 
-        mTvCover.setOnClickListener {
+        mCoverView.setOnClickListener {
             animOpen()
+        }
+
+        mTvTextList.setOnClickListener {
+            val list = mutableListOf<String>().apply {
+                add("1")
+                add("12")
+                add("123")
+                add("1234")
+            }
         }
     }
 
     private fun animOpen() {
-        mTvPage = BookAnimUtil.inst.createPageView(this).apply {
+        mTvPage = BookAnimUtil.inst.getPageView(this).apply {
             visibility = View.INVISIBLE
         }
         val params = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        mRoot.addView(mTvPage, mRoot.indexOfChild(mTvCover), params)
+        mRoot.addView(mTvPage, mRoot.indexOfChild(mCoverView), params)
         val startViewInfo = Quadruple(
-            mTvCover.left * 1f, mTvCover.top * 1f, mTvCover.width * 1f, mTvCover.height * 1f
+            mCoverView.left * 1f, mCoverView.top * 1f, mCoverView.width * 1f, mCoverView.height * 1f
         )
-        BookAnimUtil.inst.setAnimStartViews(mRoot, mTvCover, mTvPage, mIvSnapshot, startViewInfo)
+        BookAnimUtil.inst.setAnimStartViews(mRoot, mCoverView, mTvPage, mIvSnapshot, startViewInfo)
+        Anim2ndUtil.inst.setAnchorInfo(startViewInfo)
+
+//        mIvCopy.apply {
+//            setImageBitmap(BookAnimUtil.inst.genCoverBitmap())
+//            layoutParams.width = mCoverView.width
+//            layoutParams.height = mCoverView.height
+//        }
 
         mTvPage.post {
             AnimatorSet().apply {
@@ -68,22 +85,24 @@ class MainActivity : ComponentActivity() {
 
                     override fun onAnimationEnd(animation: Animator) {
                         mIvSnapshot.visibility = View.VISIBLE
-                        mIvSnapshot.setImageBitmap(BookAnimUtil.createBitmap(mTvPage))
-                        mTvCover.visibility = View.INVISIBLE
+                        mIvSnapshot.setImageBitmap(BookAnimUtil.inst.createBitmap(mTvPage))
+                        mCoverView.visibility = View.INVISIBLE
                         mTvPage.visibility = View.INVISIBLE
                         showCloseAnim = true
                         start2ndActivity(this@MainActivity)
                         overridePendingTransition(0, 0)
                     }
                 })
-            }.start()
+            }.apply {
+//                start()
+            }
         }
     }
 
     private fun animClose() {
         mTvPage = BookAnimUtil.inst.getPageView(this)
         val params = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        mRoot.addView(mTvPage, mRoot.indexOfChild(mTvCover), params)
+        mRoot.addView(mTvPage, mRoot.indexOfChild(mCoverView), params)
         mTvPage.post {
             AnimatorSet().apply {
                 playTogether(BookAnimUtil.inst.coverAnim(false).apply {
@@ -94,7 +113,7 @@ class MainActivity : ComponentActivity() {
                     override fun onAnimationStart(animation: Animator) {
                         super.onAnimationStart(animation)
                         mIvSnapshot.visibility = View.GONE
-                        mTvCover.visibility = View.VISIBLE
+                        mCoverView.visibility = View.VISIBLE
                         mTvPage.visibility = View.VISIBLE
                     }
                 })
